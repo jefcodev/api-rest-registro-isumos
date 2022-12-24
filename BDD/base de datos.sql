@@ -26,10 +26,14 @@ CREATE TABLE tbl_guardia (
     observaciones VARCHAR
 );
 
-CREATE SEQUENCE public.tbl_pedido_id_pedido_seq;
 
+create sequence pedido_id_pedido_seq
+  start with 1
+  increment by 1
+  maxvalue 99999
+  minvalue 1;
 CREATE TABLE tbl_pedido (
-	id_pedido INTEGER NOT NULL DEFAULT nextval('public.tbl_pedido_id_pedido_seq'),
+	id_pedido INTEGER PRIMARY KEY NOT NULL DEFAULT nextval('pedido_id_pedido_seq'::regclass),
     fecha_pedido DATE,
     fecha_entrega DATE,
     cantidad_libras FLOAT,
@@ -38,15 +42,17 @@ CREATE TABLE tbl_pedido (
     fk_tbl_cliente_cedula VARCHAR
 );
 
-ALTER SEQUENCE public.tbl_pedido_id_pedido_seq OWNED BY public.tbl_pedido.id_pedido;
 
 
 
-CREATE SEQUENCE public.tbl_despacho_id_despacho_seq;
-
+create sequence despacho_id_despacho_seq
+  start with 1
+  increment by 1
+  maxvalue 99999
+  minvalue 1;
 
 CREATE TABLE tbl_despacho (
-	id_despacho INTEGER NOT NULL DEFAULT nextval('public.tbl_despacho_id_despacho_seq'),
+	id_despacho INTEGER PRIMARY KEY NOT NULL DEFAULT nextval('despacho_id_despacho_seq'::regclass),
     fecha_despacho DATE,
     cantidad_libras FLOAT,
     numero_tinas INTEGER,
@@ -58,34 +64,39 @@ CREATE TABLE tbl_despacho (
 
 
 
-ALTER SEQUENCE public.tbl_despacho_id_despacho_seq OWNED BY public.tbl_despacho.id_despacho;
 
 
-CREATE SEQUENCE public.tbl_prestamo_tinas_id_prestamo_tinas_seq;
+create sequence prestamos_id_prestamo_tinas_seq
+  start with 1
+  increment by 1
+  maxvalue 99999
+  minvalue 1;
 
 CREATE TABLE tbl_prestamo_tinas (
-    id_prestamo_tinas INTEGER PRIMARY KEY,
+    id_prestamo_tinas INTEGER PRIMARY KEY NOT NULL DEFAULT nextval('prestamos_id_prestamo_tinas_seq'::regclass),
     numero_tinas INTEGER,
     fecha_prestamo DATE,
     observasiones VARCHAR,
     fk_tbl_cliente_cedula VARCHAR
 );
 
-ALTER SEQUENCE public.tbl_prestamo_tinas_id_prestamo_tinas_seq OWNED BY public.tbl_prestamo_tinas.id_prestamo_tinas;
 
 
 
-CREATE SEQUENCE public.tbl_ingreso_insumos_id_insumos_seq;
-
+create sequence insumos_id_insumos_seq
+  start with 1
+  increment by 1
+  maxvalue 99999
+  minvalue 1;
 CREATE TABLE tbl_ingreso_insumos (
-    id_insumos INTEGER PRIMARY KEY,
+    id_insumos INTEGER PRIMARY KEY NOT NULL DEFAULT nextval('insumos_id_insumos_seq'::regclass),
     fecha_ingreso DATE,
     fecha_salida DATE,
     cantidad_libras FLOAT,
     observasiones VARCHAR,
     fk_tbl_guardia_cedula VARCHAR
 );
-ALTER SEQUENCE public.tbl_ingreso_insumos_id_insumos_seq OWNED BY public.tbl_ingreso_insumos.id_insumos;
+
 
 
  
@@ -156,8 +167,15 @@ values ('2020-12-12',120 ,50,'Quito','Ninguna','1723971626','1002003006');
 select * from tbl_despacho;
 
 
+INSERT INTO public.tbl_prestamo_tinas(
+	 numero_tinas, fecha_prestamo, observasiones, fk_tbl_cliente_cedula)
+	VALUES (200, '2022-12-12','Ninguna','1723971626');
+
+select * from tbl_prestamo_tinas;
 
 
-	
+INSERT INTO public.tbl_ingreso_insumos(
+	 fecha_ingreso, fecha_salida, cantidad_libras, observasiones, fk_tbl_guardia_cedula)
+	VALUES ('2022-12-12', '2023-01-02', 50, 'Ninguna', '1002003006');
 	
 	
