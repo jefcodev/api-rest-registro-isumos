@@ -74,6 +74,7 @@ const putUpdateGuardias = async (req, res) => {
 // Pedidos
 
 const getPedidos = async (req, res) => {
+    
     const response = await db.any("SELECT pe.id_pedido, pe.fecha_pedido, pe.fecha_entrega, pe.cantidad_libras, pe.ruta, pe.observasiones,(cl.nombre || ' ' || cl.apellido) as client  FROM tbl_pedido pe INNER join tbl_cliente cl on cl.cedula=pe.fk_tbl_cliente_cedula")
     res.json(response)
 }
