@@ -14,7 +14,7 @@ app.use(express.urlencoded({extended:true}))
 app.use(cors({ origin: true, credentials: true  }));
 
 //routes
-//app.use(require('./routes/index'))
+app.use(require('./routes/index'))
 
 app.get('/',(req,res)=>res.send('Bienvenidos al servicio Rest-Api-Insumos')) 
 
