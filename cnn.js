@@ -4,7 +4,10 @@ const config={
     port:'5432',
     database:'d93ndai2jchbq7',
     user:'ijpwdyyssauzwq',
-    password:'d921ca747680a10df8cbe822494acb13c2f94711915500b20005b315c6f30309'
+    password:'d921ca747680a10df8cbe822494acb13c2f94711915500b20005b315c6f30309',
+    ssl: {
+        rejectUnauthorized: false
+      }
 
 }
 const pgp = pgPromise({})
