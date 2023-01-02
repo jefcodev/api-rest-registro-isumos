@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js"
   },
-  "author": "Jefferson Pinchao",
+  "author": "Maythe ",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
