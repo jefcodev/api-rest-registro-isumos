@@ -17,6 +17,5 @@ app.use(cors({ origin: true, credentials: true  }));
 app.use(require('./routes/index'))
 
 //execution server web
-app.listen(4000)
-console.log("Server running in http://localhost:4000")
-app.get('/',(req,res)=>{res.send('Bienvenidos al servicio Rest-Api-Insumos')}) 
+app.listen(process.env.PORT || 4000)
+console.log("Server running ", process.env.PORT)
