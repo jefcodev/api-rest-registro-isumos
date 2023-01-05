@@ -16,7 +16,7 @@ app.use(cors({ origin: true, credentials: true  }));
 //routes
 app.use(require('./routes/index'))
 
-app.get('/',(req,res)=>res.send('Bienvenidos al servicio Rest-Api-Insumos')) 
+//app.get('/',(req,res)=>res.send('Bienvenidos al servicio Rest-Api-Insumos')) 
 
 //execution server web
 app.listen(process.env.PORT || 4000)

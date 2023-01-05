@@ -8,8 +8,8 @@ const config={
     ssl: {
         rejectUnauthorized: false
       }
-
-}
+    }
+    
 const pgp = pgPromise({})
 const db = pgp(config)
 exports.db=db

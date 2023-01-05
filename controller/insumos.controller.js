@@ -74,7 +74,7 @@ const putUpdateGuardias = async (req, res) => {
 // Pedidos
 
 const getPedidos = async (req, res) => {
-    
+
     const response = await db.any("SELECT pe.id_pedido, pe.fecha_pedido, pe.fecha_entrega, pe.cantidad_libras, pe.ruta, pe.observasiones,(cl.nombre || ' ' || cl.apellido) as client  FROM tbl_pedido pe INNER join tbl_cliente cl on cl.cedula=pe.fk_tbl_cliente_cedula")
     res.json(response)
 }
@@ -105,7 +105,7 @@ const putUpdatePedidos = async (req, res) => {
 
 // despachos
 const getDespachos = async (req, res) => {
-    const response = await db.any('select * from tbl_despacho')
+    const response = await db.any("select d.id_despacho, d.fecha_despacho, d.numero_tinas, d.cantidad_libras, d.ruta, d.observasiones, (cl.nombre || ' ' || cl.apellido) as cliente, (g.nombre  || ' ' || g.apellido) as guardia from tbl_despacho d inner join tbl_guardia g on d.fk_tbl_guardia_cedula = g.cedula inner join tbl_cliente cl on cl.cedula = d.fk_tbl_cliente_cedula")
     res.json(response)
 }
 
@@ -134,7 +134,7 @@ const putUpdateDespachos = async (req, res) => {
 
 // prestamo tinas
 const getPrestamos = async (req, res) => {
-    const response = await db.any('select * from tbl_prestamo_tinas')
+    const response = await db.any("select pt.id_prestamo_tinas, pt.fecha_prestamo, pt.numero_tinas, pt.observasiones, (cl.nombre || ' ' || cl.apellido) as cliente from tbl_prestamo_tinas pt inner join tbl_cliente cl  on pt.fk_tbl_cliente_cedula = cl.cedula")
     res.json(response)
 }
 const postCreatePrestamos = async (req, res) => {
@@ -163,7 +163,7 @@ const putUpdatePrestamos = async (req, res) => {
 
 // ingreso insumos
 const getInsumos = async (req, res) => {
-    const response = await db.any('select * from tbl_ingreso_insumos')
+    const response = await db.any("select i.id_insumos, i.fecha_ingreso, i.fecha_salida, i.cantidad_libras, i.observasiones, (gu.nombre || ' ' || gu.apellido) as guardia from tbl_ingreso_insumos i inner join tbl_guardia gu on i.fk_tbl_guardia_cedula = gu.cedula")
     res.json(response)
 }
 
