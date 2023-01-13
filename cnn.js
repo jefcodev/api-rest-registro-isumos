@@ -3,7 +3,7 @@ const config={
     host:'ec2-52-21-136-176.compute-1.amazonaws.com',
     port:'5432',
     database:'d847rgbjh0ddkj',
-    user:'d847rgbjh0ddkj',
+    user:'hjbrafgmsfforo',
     password:'f121cd5e892953c968a581eeb211ebc214c3e1a71886ec52e6cfd61a37e510df',
     ssl: {
         rejectUnauthorized: false
