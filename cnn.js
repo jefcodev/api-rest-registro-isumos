@@ -1,6 +1,6 @@
 const pgPromise = require('pg-promise')
 const config={
-    host:'ec2-52-21-136-176.compute-1.amazonaws.com',
+    host:'ec2-3-224-164-189.compute-1.amazonaws.com',
     port:'5432',
     database:'d847rgbjh0ddkj',
     user:'hjbrafgmsfforo',
