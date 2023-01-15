@@ -179,3 +179,117 @@ INSERT INTO public.tbl_ingreso_insumos(
 	VALUES ('2022-12-12', '2023-01-02', 50, 'Ninguna', '1002003006');
 	
 	
+
+// Nuevas tablas //
+
+    /* Lógico_1: */
+create sequence id_autoridades_seq
+  start with 1
+  increment by 1
+  maxvalue 99999
+  minvalue 1;
+
+
+CREATE TABLE tbl_autoridades (
+    id INTEGER PRIMARY KEY NOT NULL DEFAULT nextval('id_autoridades_seq'::regclass),
+    apellido VARCHAR,
+    nombre VARCHAR
+);
+
+create sequence id_recicladas_seq
+  start with 1
+  increment by 1
+  maxvalue 99999
+  minvalue 1;
+
+CREATE TABLE tbl_recicladas (
+    id INTEGER PRIMARY KEY NOT NULL DEFAULT nextval('id_recicladas_seq'::regclass),
+    fecha DATE,
+    numero_acta VARCHAR,
+    cantidad INTEGER,
+    observacion VARCHAR,
+    fk_tbl_autoridades_id INTEGER
+);
+
+
+create sequence id_devolucion_seq
+  start with 1
+  increment by 1
+  maxvalue 99999
+  minvalue 1;
+
+CREATE TABLE tbl_devolucion (
+    id INTEGER PRIMARY KEY NOT NULL DEFAULT nextval('id_devolucion_seq'::regclass),
+    cantidad INTEGER,
+    observacion VARCHAR,
+    fecha DATE,
+    fk_tbl_prestamo_tinas_id INTEGER
+);
+create sequence id_tinas_seq
+  start with 1
+  increment by 1
+  maxvalue 99999
+  minvalue 1;
+
+CREATE TABLE tbl_tinas (
+    id INTEGER PRIMARY KEY NOT NULL DEFAULT nextval('id_tinas_seq'::regclass),
+    nombre VARCHAR,
+    stock INTEGER
+);
+
+create sequence id_compras_seq
+  start with 1
+  increment by 1
+  maxvalue 99999
+  minvalue 1;
+CREATE TABLE tbl_compras (
+    id_compras INTEGER PRIMARY KEY NOT NULL DEFAULT nextval('id_compras_seq'::regclass),
+    fecha DATE,
+    numero_acta VARCHAR,
+    cantidad INTEGER,
+    observacion VARCHAR,
+    fk_tbl_autoridades_id INTEGER
+);
+
+
+
+alter table tbl_prestamo_tinas add numero_acta varchar(200);
+alter table tbl_prestamo_tinas add fecha_entrega date;
+
+ 
+ALTER TABLE tbl_recicladas ADD CONSTRAINT FK_tbl_recicladas_2
+    FOREIGN KEY (fk_tbl_autoridades_id)
+    REFERENCES tbl_autoridades (id)
+    ON DELETE RESTRICT;
+ 
+ALTER TABLE tbl_compras ADD CONSTRAINT FK_tbl_compras_2
+    FOREIGN KEY (fk_tbl_autoridades_id)
+    REFERENCES tbl_autoridades (id)
+    ON DELETE RESTRICT;
+
+ALTER TABLE tbl_devolucion ADD CONSTRAINT FK_tbl_devolucion_2
+    FOREIGN KEY (fk_tbl_prestamo_tinas_id)
+    REFERENCES tbl_prestamo_tinas (id_prestamo_tinas)
+    ON DELETE RESTRICT;
+
+
+insert into public.tbl_autoridades (nombre, apellido) values ('Andres', 'Ortega');
+insert into public.tbl_autoridades (nombre, apellido) values ('Martín', 'Alvear');
+insert into public.tbl_autoridades (nombre, apellido) values ('Jose', 'Quimbiamba');
+
+
+/* Insert tinas recicladas */
+
+insert into public.tbl_recicladas (fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id) values ('2022-11-1', '123',100,'Ninguna',1);
+insert into public.tbl_recicladas (fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id) values ('2023-01-1', '124',80,'Ninguna',2);
+insert into public.tbl_recicladas (fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id) values ('2023-01-14', '125',20,'Ninguna',3);
+
+
+/* Devolución */
+
+insert into public.tbl_devolucion (fecha, cantidad, observacion, fk_tbl_prestamo_tinas_id) values ('2022-11-1', 20,'Ninguna',1);
+
+
+/* Inicio de tinas */ 
+
+insert into public.tbl_tinas (nombre, stock) values ('Tinas premium', 1000);

@@ -1,13 +1,10 @@
 const pgPromise = require('pg-promise')
 const config={
-    host:'ec2-3-224-164-189.compute-1.amazonaws.com',
+    host:'localhost',
     port:'5432',
-    database:'d847rgbjh0ddkj',
-    user:'hjbrafgmsfforo',
-    password:'f121cd5e892953c968a581eeb211ebc214c3e1a71886ec52e6cfd61a37e510df',
-    ssl: {
-        rejectUnauthorized: false
-      }
+    database:'prueba_insumos',
+    user:'postgres',
+    password:'root'
     }
     
 const pgp = pgPromise({})
