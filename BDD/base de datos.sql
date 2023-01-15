@@ -293,3 +293,10 @@ insert into public.tbl_devolucion (fecha, cantidad, observacion, fk_tbl_prestamo
 /* Inicio de tinas */ 
 
 insert into public.tbl_tinas (nombre, stock) values ('Tinas premium', 1000);
+
+INSERT INTO public.tbl_compras(
+	fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id)
+	VALUES ('2022-12-12','150', 100, 'Nimguma', 1);
+    INSERT INTO public.tbl_compras(
+	fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id)
+	VALUES ('2022-12-12','150', 100, 'Nimguma', 2);

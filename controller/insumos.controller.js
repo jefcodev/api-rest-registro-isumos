@@ -134,7 +134,7 @@ const putUpdateDespachos = async (req, res) => {
 
 // prestamo tinas
 const getPrestamos = async (req, res) => {
-    const response = await db.any("select pt.id_prestamo_tinas, pt.fecha_prestamo, pt.numero_tinas, pt.observasiones, (cl.nombre || ' ' || cl.apellido) as cliente from tbl_prestamo_tinas pt inner join tbl_cliente cl  on pt.fk_tbl_cliente_cedula = cl.cedula")
+    const response = await db.any("select pt.id_prestamo_tinas, pt.fecha_prestamo, pt.numero_tinas, pt.observasiones, pt.numero_acta, pt.fecha_entrega, (cl.nombre || ' ' || cl.apellido) as cliente from tbl_prestamo_tinas pt inner join tbl_cliente cl  on pt.fk_tbl_cliente_cedula = cl.cedula")
     res.json(response)
 }
 const postCreatePrestamos = async (req, res) => {
@@ -191,6 +191,97 @@ const putUpdateInsumos = async (req, res) => {
     })
 }
 
+
+
+/* Autoridades  */
+
+const getAutoridades = async (req, res) => {
+    const response = await db.any("select * from tbl_autoridades")
+    res.json(response)
+}
+
+const postCreateAutoridades = async (req, res) => {
+    const { nombre, apellido} = req.body
+    const response = await db.any(`INSERT INTO tbl_autoridades (nombre, apellido) 
+    values($1,$2)`, [nombre, apellido])
+    res.json({
+        message: 'tbl_autoridades creada correctamente',
+        body: {
+            nombre, apellido
+        }
+    })
+}
+
+const putUpdateAutoridades = async (req, res) => {
+    const { id,nombre, apellido } = req.body
+    const response = await db.any(`UPDATE tbl_autoridades set nombre=$2, apellido=$3 
+    where id=$1`, [id, nombre, apellido])
+    res.json({
+        message: 'Autoridad actualizado correctamente',
+        body: {
+            id, nombre, apellido
+        }
+    })
+}
+
+
+
+
+/* Autoridades  */
+
+const getReciclados = async (req, res) => {
+    const response = await db.any("select r.id, r.fecha, r.numero_acta, r.cantidad, r.observacion, (a.nombre || ' ' || a.apellido) as autoridad from tbl_recicladas r inner join tbl_autoridades a on r.fk_tbl_autoridades_id = a.id")
+    res.json(response)
+}
+
+/* const postCreateReciclados = async (req, res) => {
+    const { nombre, apellido} = req.body
+    const response = await db.any(`INSERT INTO tbl_autoridades (nombre, apellido) 
+    values($1,$2)`, [nombre, apellido])
+    res.json({
+        message: 'tbl_autoridades creada correctamente',
+        body: {
+            nombre, apellido
+        }
+    })
+}
+
+const putUpdateReciclados = async (req, res) => {
+    const { id,nombre, apellido } = req.body
+    const response = await db.any(`UPDATE tbl_autoridades set nombre=$2, apellido=$3 
+    where id=$1`, [id, nombre, apellido])
+    res.json({
+        message: 'Autoridad actualizado correctamente',
+        body: {
+            id, nombre, apellido
+        }
+    })
+} */
+
+
+/* Devolución  */
+
+const getDevolucion = async (req, res) => {
+    const response = await db.any("select * from tbl_devolucion")
+    res.json(response)
+}
+
+/* Tinas  */
+
+const getTinas = async (req, res) => {
+    const response = await db.any("select * from tbl_tinas")
+    res.json(response)
+}
+
+
+/* Compras  */
+
+const getCompras = async (req, res) => {
+    const response = await db.any("select c.id_compras, c.fecha, c.numero_acta, c.cantidad, c.observacion, (a.nombre || ' ' || a.apellido) as autoridad from tbl_compras c inner join tbl_autoridades a on c.fk_tbl_autoridades_id = a.id")
+    res.json(response)
+}
+
+
 module.exports = {
     getClientes,
     getGuardias,
@@ -199,16 +290,23 @@ module.exports = {
     getDespachos,
     getPrestamos,
     getInsumos,
+    getAutoridades,
+    getTinas,
+    getCompras,
+    getReciclados,
+    getDevolucion,
     postCreateClientes,
     postCreateGuardias,
     postCreatePedidos,
     postCreateInsumos,
     postCreateDespachos,
     postCreatePrestamos,
+    postCreateAutoridades,
     putUpdateClientes,
     putUpdateGuardias,
     putUpdatePedidos,
     putUpdateDespachos,
     putUpdatePrestamos,
-    putUpdateInsumos
+    putUpdateInsumos,
+    putUpdateAutoridades
 }
