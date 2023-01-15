@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { getClientes, getGuardias, getPedidos, getUsuarios, getDespachos, getPrestamos, getInsumos, postCreateClientes, postCreateGuardias, 
     postCreatePedidos, postCreateInsumos, postCreatePrestamos, postCreateDespachos, putUpdateClientes, putUpdateGuardias, putUpdatePedidos, putUpdateDespachos,
-    putUpdatePrestamos, putUpdateInsumos} = require("../controller/insumos.controller");
+    putUpdatePrestamos, putUpdateInsumos, getAutoridades, putUpdateAutoridades, postCreateAutoridades, getTinas, getDevolucion, getCompras, getReciclados} = require("../controller/insumos.controller");
 
 
 
@@ -15,6 +15,12 @@ router.get("/usuarios",getUsuarios)
 router.get("/clientes",getClientes)
 router.post("/clientes", postCreateClientes)
 router.put("/clientes", putUpdateClientes)
+
+//Autoridades
+
+router.get("/autoridades",getAutoridades)
+router.post("/autoridades", postCreateAutoridades)
+router.put("/autoridades", putUpdateAutoridades)
 
 
 //Guardias
@@ -44,5 +50,22 @@ router.put("/prestamos", putUpdatePrestamos)
 router.get("/insumos", getInsumos)
 router.post("/insumos", postCreateInsumos)
 router.put("/insumos", putUpdateInsumos)
+
+
+//Tinas
+
+router.get("/tinas", getTinas)
+
+// Compras
+
+router.get("/compras", getCompras)
+
+//Reciclados
+
+router.get("/recicladas",getReciclados)
+
+// Devoluciones
+
+router.get("/devoluciones", getDevolucion)
 
 module.exports=router
