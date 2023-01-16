@@ -29,3 +29,6 @@ client.query('SELECT table_schema,table_name FROM information_schema.tables;', (
   }
   client.end();
 }); */
+
+
+/* Mensaje de prueba para revisar configuración de Heroku */
