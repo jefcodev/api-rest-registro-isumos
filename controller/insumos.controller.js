@@ -235,9 +235,9 @@ const getReciclados = async (req, res) => {
 }
 
 const postCreateReciclados = async (req, res) => {
-    const { fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id} = req.body
-    const response = await db.any(`INSERT INTO tbl_recicladas (fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id) 
-    values($1,$2 ,$3, $4, $5)`, [fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id])
+    const { fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id} = req.body
+    const response = await db.any(`INSERT INTO tbl_recicladas (fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id) 
+    values($1,$2 ,$3, $4, $5, 1)`, [fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id])
     res.json({
         message: 'tbl_recicladas creada correctamente',
         body: {

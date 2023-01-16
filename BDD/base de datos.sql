@@ -1,7 +1,5 @@
 /* Lógico_1: */
 
-
-
 CREATE TABLE tbl_cliente (
     cedula VARCHAR(50) PRIMARY KEY,
     nombre VARCHAR(50),
@@ -252,13 +250,8 @@ CREATE TABLE tbl_compras (
 );
 
 
-
 alter table tbl_prestamo_tinas add numero_acta varchar(200);
 alter table tbl_prestamo_tinas add fecha_entrega date;
-
-
-
-
 
  
 ALTER TABLE tbl_recicladas ADD CONSTRAINT FK_tbl_recicladas_2
@@ -396,3 +389,67 @@ INSERT INTO public.tbl_prestamo_tinas(
 UPDATE tbl_prestamo_tinas SET numero_tinas = 20 WHERE id_prestamo_tinas = 7 AND product_id =1;
 
 /* Fin trigger prestamo tinas */
+
+/* Inicio trigger tabla recicladas  */
+CREATE OR REPLACE FUNCTION update_stock_recicladas() RETURNS TRIGGER AS $$
+BEGIN
+    IF (TG_OP = 'INSERT') THEN
+        UPDATE tbl_tinas SET stock = stock - NEW.cantidad WHERE id = NEW.product_id;
+    ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE tbl_tinas SET stock = stock + OLD.cantidad - NEW.cantidad WHERE id = NEW.product_id;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_stock_recicladas
+AFTER INSERT OR UPDATE ON tbl_recicladas
+FOR EACH ROW
+EXECUTE FUNCTION update_stock_recicladas();
+
+
+select * from tbl_tinas;
+select * from tbl_recicladas;
+
+INSERT INTO public.tbl_recicladas( fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id)
+	VALUES ('2022-12-12', '125', 10, 'En mal estado', 1 ,1);
+
+UPDATE tbl_recicladas SET cantidad = 20 WHERE id = 5 AND product_id =1;
+
+
+/* Fin tablas recicladas */
+
+/* Inicio de devolicon de tinas */
+
+
+CREATE OR REPLACE FUNCTION update_stock_devolucion() RETURNS TRIGGER AS $$
+BEGIN
+    IF (TG_OP = 'INSERT') THEN
+        UPDATE tbl_tinas SET stock = stock + NEW.cantidad WHERE id = NEW.product_id;
+		UPDATE tbl_prestamo_tinas SET numero_tinas= numero_tinas - NEW.cantidad WHERE id_prestamo_tinas = NEW.fk_tbl_prestamo_tinas_id;
+    ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE tbl_tinas SET stock = stock - OLD.cantidad + NEW.cantidad WHERE id = NEW.product_id;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_stock_devolucion
+AFTER INSERT OR UPDATE ON tbl_devolucion
+FOR EACH ROW
+EXECUTE FUNCTION update_stock_devolucion();
+
+
+select * from tbl_tinas;
+select * from tbl_devolucion;
+select * from tbl_prestamo_tinas;
+
+INSERT INTO public.tbl_devolucion(
+	cantidad, observacion, fecha, fk_tbl_prestamo_tinas_id, product_id)
+	VALUES (30, 'Devuelve la mitad', '2022-12-12', 8,1);
+
+
+
+UPDATE tbl_recicladas SET cantidad = 20 WHERE id = 5 AND product_id =1;
+
+/* Fin de devolucion de tinas  */
