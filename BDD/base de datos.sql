@@ -256,6 +256,10 @@ CREATE TABLE tbl_compras (
 alter table tbl_prestamo_tinas add numero_acta varchar(200);
 alter table tbl_prestamo_tinas add fecha_entrega date;
 
+
+
+
+
  
 ALTER TABLE tbl_recicladas ADD CONSTRAINT FK_tbl_recicladas_2
     FOREIGN KEY (fk_tbl_autoridades_id)
@@ -300,3 +304,95 @@ INSERT INTO public.tbl_compras(
     INSERT INTO public.tbl_compras(
 	fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id)
 	VALUES ('2022-12-12','150', 100, 'Nimguma', 2);
+
+
+
+
+
+/* Nueva Sentencia  */
+
+
+alter table tbl_devolucion add product_id integer;
+alter table tbl_recicladas add product_id integer;
+
+alter table tbl_compras add product_id integer;
+
+alter table tbl_prestamo_tinas add product_id integer;
+
+
+
+ALTER TABLE tbl_compras ADD CONSTRAINT FK_tbl_compras_3
+    FOREIGN KEY (product_id)
+    REFERENCES tbl_tinas (id)
+    ON DELETE RESTRICT;
+
+/* Inicio trigger compras */
+
+CREATE OR REPLACE FUNCTION update_stock() RETURNS TRIGGER AS $$
+BEGIN
+    IF (TG_OP = 'INSERT') THEN
+        UPDATE tbl_tinas SET stock = stock + NEW.cantidad WHERE id = NEW.product_id;
+/* Realizamos un trigger al realizar un UPDATE nos realiza una actualización de la tabla products  */
+    ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE tbl_tinas SET stock = stock - OLD.cantidad + NEW.cantidad WHERE id = NEW.product_id;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+/* Creamos la funcion, y sentenciamos que se aplique despues de un INSERT o un UPDATE */
+CREATE TRIGGER update_stock
+AFTER INSERT OR UPDATE ON tbl_compras
+FOR EACH ROW
+EXECUTE FUNCTION update_stock();
+
+
+select * from tbl_compras;
+
+INSERT INTO public.tbl_compras(
+	 fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id)
+	VALUES ( '2020-10-10', '123', 100, 'Ninguna', 1, 1);
+	
+UPDATE tbl_compras SET cantidad = 80 WHERE id_compras = 5 AND product_id =1;
+
+select * from tbl_tinas;
+
+/* Fin trigger compras */
+
+
+
+ALTER TABLE tbl_prestamo_tinas ADD CONSTRAINT FK_tbl_prestamo_tinas_3
+    FOREIGN KEY (product_id)
+    REFERENCES tbl_tinas (id)
+    ON DELETE RESTRICT;
+
+
+/*Inicio trigger prestamo tinas */
+
+CREATE OR REPLACE FUNCTION update_stock_prestamo() RETURNS TRIGGER AS $$
+BEGIN
+    IF (TG_OP = 'INSERT') THEN
+        UPDATE tbl_tinas SET stock = stock - NEW.numero_tinas WHERE id = NEW.product_id;
+    ELSIF (TG_OP = 'UPDATE') THEN
+        UPDATE tbl_tinas SET stock = stock + OLD.numero_tinas - NEW.numero_tinas WHERE id = NEW.product_id;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_stock_prestamo
+AFTER INSERT OR UPDATE ON tbl_prestamo_tinas
+FOR EACH ROW
+EXECUTE FUNCTION update_stock_prestamo();
+
+select * from tbl_prestamo_tinas;
+select * from tbl_tinas;
+select * from tbl_cliente;
+
+INSERT INTO public.tbl_prestamo_tinas(
+	 numero_tinas, fecha_prestamo, observasiones, fk_tbl_cliente_cedula, numero_acta, fecha_entrega, product_id)
+	VALUES ( 40, '2022-10-10', 'Ninguna', '1723971626', '123','2022-10-12' , 1);
+	
+UPDATE tbl_prestamo_tinas SET numero_tinas = 20 WHERE id_prestamo_tinas = 7 AND product_id =1;
+
+/* Fin trigger prestamo tinas */
