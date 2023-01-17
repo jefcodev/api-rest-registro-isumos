@@ -138,9 +138,9 @@ const getPrestamos = async (req, res) => {
     res.json(response)
 }
 const postCreatePrestamos = async (req, res) => {
-    const { numero_tinas, fecha_prestamo, observasiones, fk_tbl_cliente_cedula } = req.body
-    const response = await db.any(`INSERT INTO tbl_prestamo_tinas (numero_tinas, fecha_prestamo, observasiones, fk_tbl_cliente_cedula) 
-    values($1,$2,$3,$4)`, [numero_tinas, fecha_prestamo, observasiones, fk_tbl_cliente_cedula])
+    const { numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula} = req.body
+    const response = await db.any(`INSERT INTO tbl_prestamo_tinas (numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula) 
+    values($1,$2,$3,$4,$5,$6)`, [numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula ])
     res.json({
         message: 'tbl_prestamo_tinas creada correctamente',
         body: {
@@ -150,9 +150,9 @@ const postCreatePrestamos = async (req, res) => {
 }
 
 const putUpdatePrestamos = async (req, res) => {
-    const { id_prestamo_tinas, numero_tinas, fecha_prestamo, observasiones, fk_tbl_cliente_cedula } = req.body
-    const response = await db.any(`UPDATE tbl_prestamo_tinas set numero_tinas=$2, fecha_prestamo=$3, observasiones=$4, fk_tbl_cliente_cedula=$5
-    where id_prestamo_tinas=$1`, [id_prestamo_tinas, numero_tinas, fecha_prestamo, observasiones, fk_tbl_cliente_cedula])
+    const { id_prestamo_tinas, numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega,fk_tbl_cliente_cedula } = req.body
+    const response = await db.any(`UPDATE tbl_prestamo_tinas set numero_tinas=$2, fecha_prestamo=$3, observasiones=$4, numero_acta=$5, fecha_entrega=$6, fk_tbl_cliente_cedula=$7
+    where id_prestamo_tinas=$1`, [id_prestamo_tinas, numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula])
     res.json({
         message: 'Prestamo tinas actualizado correctamente',
         body: {
@@ -227,36 +227,36 @@ const putUpdateAutoridades = async (req, res) => {
 
 
 
-/* Autoridades  */
+/* Recilcados  */
 
 const getReciclados = async (req, res) => {
     const response = await db.any("select r.id, r.fecha, r.numero_acta, r.cantidad, r.observacion, (a.nombre || ' ' || a.apellido) as autoridad from tbl_recicladas r inner join tbl_autoridades a on r.fk_tbl_autoridades_id = a.id")
     res.json(response)
 }
 
-/* const postCreateReciclados = async (req, res) => {
-    const { nombre, apellido} = req.body
-    const response = await db.any(`INSERT INTO tbl_autoridades (nombre, apellido) 
-    values($1,$2)`, [nombre, apellido])
+const postCreateReciclados = async (req, res) => {
+    const { fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id} = req.body
+    const response = await db.any(`INSERT INTO tbl_recicladas (fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id) 
+    values($1,$2 ,$3, $4, $5, 1)`, [fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id])
     res.json({
-        message: 'tbl_autoridades creada correctamente',
+        message: 'tbl_recicladas creada correctamente',
         body: {
-            nombre, apellido
+            fecha, numero_acta
         }
     })
 }
 
 const putUpdateReciclados = async (req, res) => {
-    const { id,nombre, apellido } = req.body
-    const response = await db.any(`UPDATE tbl_autoridades set nombre=$2, apellido=$3 
-    where id=$1`, [id, nombre, apellido])
+    const { id,fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id } = req.body
+    const response = await db.any(`UPDATE tbl_recicladas set fecha=$2, numero_acta=$3, cantidad=$4, observacion=$5, fk_tbl_autoridades_id=$6
+    where id=$1`, [id,fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id])
     res.json({
         message: 'Autoridad actualizado correctamente',
         body: {
-            id, nombre, apellido
+            id,fecha, numero_acta
         }
     })
-} */
+}
 
 
 /* Devolución  */
@@ -302,11 +302,13 @@ module.exports = {
     postCreateDespachos,
     postCreatePrestamos,
     postCreateAutoridades,
+    postCreateReciclados,
     putUpdateClientes,
     putUpdateGuardias,
     putUpdatePedidos,
     putUpdateDespachos,
     putUpdatePrestamos,
     putUpdateInsumos,
-    putUpdateAutoridades
+    putUpdateAutoridades,
+    putUpdateReciclados
 }
