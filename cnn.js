@@ -1,4 +1,4 @@
-const pgPromise = require('pg-promise')
+/* const pgPromise = require('pg-promise')
 const config={
     host:'localhost',
     port:'5432',
@@ -10,10 +10,10 @@ const config={
 const pgp = pgPromise({})
 const db = pgp(config)
 exports.db=db
-
+ */
 
 /* Conección SERRVIDOR HEROKU */
-/* 
+
 const pgPromise = require('pg-promise')
 const config={
     host:'ec2-3-224-164-189.compute-1.amazonaws.com',
@@ -28,4 +28,4 @@ const config={
     
 const pgp = pgPromise({})
 const db = pgp(config)
-exports.db=db */
+exports.db=db 
