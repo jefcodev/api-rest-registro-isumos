@@ -138,9 +138,9 @@ const getPrestamos = async (req, res) => {
     res.json(response)
 }
 const postCreatePrestamos = async (req, res) => {
-    const { numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula} = req.body
-    const response = await db.any(`INSERT INTO tbl_prestamo_tinas (numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula) 
-    values($1,$2,$3,$4,$5,$6)`, [numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula ])
+    const { numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula,product_id} = req.body
+    const response = await db.any(`INSERT INTO tbl_prestamo_tinas (numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula,product_id) 
+    values($1,$2,$3,$4,$5,$6,1)`, [numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula,product_id ])
     res.json({
         message: 'tbl_prestamo_tinas creada correctamente',
         body: {
@@ -150,9 +150,9 @@ const postCreatePrestamos = async (req, res) => {
 }
 
 const putUpdatePrestamos = async (req, res) => {
-    const { id_prestamo_tinas, numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega,fk_tbl_cliente_cedula } = req.body
+    const { id_prestamo_tinas, numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega,fk_tbl_cliente_cedula, product_id } = req.body
     const response = await db.any(`UPDATE tbl_prestamo_tinas set numero_tinas=$2, fecha_prestamo=$3, observasiones=$4, numero_acta=$5, fecha_entrega=$6, fk_tbl_cliente_cedula=$7
-    where id_prestamo_tinas=$1`, [id_prestamo_tinas, numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula])
+    where id_prestamo_tinas=$1 AND product_id=1`, [id_prestamo_tinas, numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula,product_id])
     res.json({
         message: 'Prestamo tinas actualizado correctamente',
         body: {
@@ -247,9 +247,9 @@ const postCreateReciclados = async (req, res) => {
 }
 
 const putUpdateReciclados = async (req, res) => {
-    const { id,fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id } = req.body
+    const { id, fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id } = req.body
     const response = await db.any(`UPDATE tbl_recicladas set fecha=$2, numero_acta=$3, cantidad=$4, observacion=$5, fk_tbl_autoridades_id=$6
-    where id=$1`, [id,fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id])
+    where id=$1 AND  product_id=1`, [id, fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id])
     res.json({
         message: 'Autoridad actualizado correctamente',
         body: {
@@ -264,6 +264,32 @@ const putUpdateReciclados = async (req, res) => {
 const getDevolucion = async (req, res) => {
     const response = await db.any("select * from tbl_devolucion")
     res.json(response)
+}
+
+
+
+const postCreateDevolucion = async (req, res) => {
+    const { cantidad, observacion, fecha, fk_tbl_prestamo_tinas, product_id} = req.body
+    const response = await db.any(`INSERT INTO tbl_devolucion (cantidad, observacion, fecha, fk_tbl_prestamo_tinas, product_id) 
+    values($1,$2, $3, $4,1)`, [cantidad, observacion, fecha, fk_tbl_prestamo_tinas, product_id])
+    res.json({
+        message: 'tbl_devolucion creada correctamente',
+        body: {
+            cantidad, observacion, fecha, fk_tbl_prestamo_tinas, product_id
+        }
+    })
+}
+
+const putUpdateDevolucion = async (req, res) => {
+    const { id,cantidad, observacion, fecha, fk_tbl_prestamo_tinas, product_id } = req.body
+    const response = await db.any(`UPDATE tbl_devolucion set cantidad=$2, observacion=$3, fecha=$4,  fk_tbl_prestamo_tinas=$5
+    where id=$1 AND product_id = 1`, [id, cantidad, observacion, fecha, fk_tbl_prestamo_tinas, product_id])
+    res.json({
+        message: 'Decoluciones actualizado correctamente',
+        body: {
+            cantidad, observacion, fecha, fk_tbl_prestamo_tinas, product_id
+        }
+    })
 }
 
 /* Tinas  */
@@ -303,6 +329,7 @@ module.exports = {
     postCreatePrestamos,
     postCreateAutoridades,
     postCreateReciclados,
+    postCreateDevolucion,
     putUpdateClientes,
     putUpdateGuardias,
     putUpdatePedidos,
@@ -310,5 +337,6 @@ module.exports = {
     putUpdatePrestamos,
     putUpdateInsumos,
     putUpdateAutoridades,
-    putUpdateReciclados
+    putUpdateReciclados,
+    putUpdateDevolucion
 }
