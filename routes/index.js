@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { getClientes, getGuardias, getPedidos, getUsuarios, getDespachos, getPrestamos, getInsumos, postCreateClientes, postCreateGuardias, 
     postCreatePedidos, postCreateInsumos, postCreatePrestamos, postCreateDespachos, putUpdateClientes, putUpdateGuardias, putUpdatePedidos, putUpdateDespachos,
     putUpdatePrestamos, putUpdateInsumos, getAutoridades, putUpdateAutoridades, postCreateAutoridades, getTinas, getDevolucion, getCompras, getReciclados,
-    postCreateReciclados, putUpdateReciclados, postCreateDevolucion, putUpdateDevolucion} = require("../controller/insumos.controller");
+    postCreateReciclados, putUpdateReciclados, postCreateDevolucion, putUpdateDevolucion,postCreateCompras, putUpdateCompras} = require("../controller/insumos.controller");
 
 
 
@@ -60,6 +60,8 @@ router.get("/tinas", getTinas)
 // Compras
 
 router.get("/compras", getCompras)
+router.post("/compras", postCreateCompras)
+router.put("/compras",putUpdateCompras)
 
 //Reciclados
 
