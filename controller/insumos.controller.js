@@ -23,7 +23,7 @@ const postCreateClientes = async (req, res) => {
     values($1,$2,$3,$4,$5)`, [cedula, nombre, apellido, ciudad, telefono])
     res.json({
         message: 'tbl_cliente creada correctamente'
-       
+
     })
 }
 
@@ -33,7 +33,7 @@ const putUpdateClientes = async (req, res) => {
     where cedula=$1`, [cedula, nombre, apellido, ciudad, telefono])
     res.json({
         message: 'Cliente actualizado correctamente'
-        
+
     })
 }
 
@@ -49,7 +49,7 @@ const postCreateGuardias = async (req, res) => {
     values($1,$2,$3,$4,$5)`, [cedula, nombre, apellido, telefono, observaciones])
     res.json({
         message: 'tbl_guardia creada correctamente'
-       
+
     })
 }
 
@@ -59,7 +59,7 @@ const putUpdateGuardias = async (req, res) => {
     where cedula=$1`, [cedula, nombre, apellido, telefono, observaciones])
     res.json({
         message: 'Cliente actualizado correctamente'
-       
+
     })
 }
 
@@ -78,7 +78,7 @@ const postCreatePedidos = async (req, res) => {
     values($1,$2,$3,$4,$5, $6)`, [fecha_pedido, fecha_entrega, cantidad_libras, ruta, observasiones, fk_tbl_cliente_cedula])
     res.json({
         message: 'Ayudante creado correctamente'
-        
+
     })
 }
 
@@ -88,7 +88,7 @@ const putUpdatePedidos = async (req, res) => {
     where id_pedido=$1`, [id_pedido, fecha_pedido, fecha_entrega, cantidad_libras, ruta, observasiones, fk_tbl_cliente_cedula])
     res.json({
         message: 'Pedido actualizado correctamente'
-       
+
     })
 }
 
@@ -104,7 +104,7 @@ const postCreateDespachos = async (req, res) => {
     values($1,$2,$3,$4,$5,$6,$7)`, [fecha_despacho, cantidad_libras, numero_tinas, ruta, observasiones, fk_tbl_cliente_cedula, fk_tbl_guardia_cedula])
     res.json({
         message: 'tbl_despacho creada correctamente'
-       
+
     })
 }
 const putUpdateDespachos = async (req, res) => {
@@ -113,7 +113,7 @@ const putUpdateDespachos = async (req, res) => {
     where id_despacho=$1`, [id_despacho, fecha_despacho, cantidad_libras, numero_tinas, ruta, observasiones, fk_tbl_cliente_cedula, fk_tbl_guardia_cedula])
     res.json({
         message: 'Despacho actualizado correctamente'
-        
+
     })
 }
 
@@ -121,24 +121,33 @@ const putUpdateDespachos = async (req, res) => {
 const getPrestamos = async (req, res) => {
     const response = await db.any("select pt.id_prestamo_tinas, pt.fecha_prestamo, pt.numero_tinas, pt.observasiones, pt.numero_acta, pt.fecha_entrega, (cl.nombre || ' ' || cl.apellido) as cliente from tbl_prestamo_tinas pt inner join tbl_cliente cl  on pt.fk_tbl_cliente_cedula = cl.cedula")
     res.json(response)
+
+
+}
+
+const getPrestamos2 = async (req, res) => {
+    const response = await db.any("SELECT (cl.nombre || ' '|| cl.apellido) as cliente, pt.numero_tinas, pt.fecha_prestamo,pt.fecha_entrega FROM public.tbl_prestamo_tinas pt inner join tbl_cliente cl on cl.cedula = pt.fk_tbl_cliente_cedula where numero_tinas >0;")
+    res.json(response)
+
+
 }
 const postCreatePrestamos = async (req, res) => {
-    const { numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula,product_id} = req.body
+    const { numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula, product_id } = req.body
     const response = await db.any(`INSERT INTO tbl_prestamo_tinas (numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula,product_id) 
-    values($1,$2,$3,$4,$5,$6,1)`, [numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula,product_id ])
+    values($1,$2,$3,$4,$5,$6,1)`, [numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula, product_id])
     res.json({
         message: 'tbl_prestamo_tinas creada correctamente'
-        
+
     })
 }
 
 const putUpdatePrestamos = async (req, res) => {
-    const { id_prestamo_tinas, numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega,fk_tbl_cliente_cedula, product_id } = req.body
+    const { id_prestamo_tinas, numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula, product_id } = req.body
     const response = await db.any(`UPDATE tbl_prestamo_tinas set numero_tinas=$2, fecha_prestamo=$3, observasiones=$4, numero_acta=$5, fecha_entrega=$6, fk_tbl_cliente_cedula=$7
-    where id_prestamo_tinas=$1 AND product_id=1`, [id_prestamo_tinas, numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula,product_id])
+    where id_prestamo_tinas=$1 AND product_id=1`, [id_prestamo_tinas, numero_tinas, fecha_prestamo, observasiones, numero_acta, fecha_entrega, fk_tbl_cliente_cedula, product_id])
     res.json({
         message: 'Prestamo tinas actualizado correctamente'
-       
+
     })
 }
 
@@ -154,7 +163,7 @@ const postCreateInsumos = async (req, res) => {
     values($1,$2,$3,$4,$5)`, [fecha_ingreso, fecha_salida, cantidad_libras, observasiones, fk_tbl_guardia_cedula])
     res.json({
         message: 'tbl_ingreso_insumos creada correctamente'
-       
+
     })
 }
 
@@ -164,7 +173,7 @@ const putUpdateInsumos = async (req, res) => {
     where id_insumos=$1`, [id_insumos, fecha_ingreso, fecha_salida, cantidad_libras, observasiones, fk_tbl_guardia_cedula])
     res.json({
         message: 'Insumo actualizado correctamente'
-        
+
     })
 }
 
@@ -178,22 +187,22 @@ const getAutoridades = async (req, res) => {
 }
 
 const postCreateAutoridades = async (req, res) => {
-    const { nombre, apellido} = req.body
+    const { nombre, apellido } = req.body
     const response = await db.any(`INSERT INTO tbl_autoridades (nombre, apellido) 
     values($1,$2)`, [nombre, apellido])
     res.json({
         message: 'tbl_autoridades creada correctamente'
-        
+
     })
 }
 
 const putUpdateAutoridades = async (req, res) => {
-    const { id,nombre, apellido } = req.body
+    const { id, nombre, apellido } = req.body
     const response = await db.any(`UPDATE tbl_autoridades set nombre=$2, apellido=$3 
     where id=$1`, [id, nombre, apellido])
     res.json({
         message: 'Autoridad actualizado correctamente'
-        
+
     })
 }
 
@@ -208,12 +217,12 @@ const getReciclados = async (req, res) => {
 }
 
 const postCreateReciclados = async (req, res) => {
-    const { fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id} = req.body
+    const { fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id } = req.body
     const response = await db.any(`INSERT INTO tbl_recicladas (fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id) 
     values($1,$2 ,$3, $4, $5, 1)`, [fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id])
     res.json({
         message: 'tbl_recicladas creada correctamente'
-        
+
     })
 }
 
@@ -223,7 +232,7 @@ const putUpdateReciclados = async (req, res) => {
     where id=$1 AND  product_id=1`, [id, fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id])
     res.json({
         message: 'Autoridad actualizado correctamente'
-       
+
     })
 }
 
@@ -231,29 +240,29 @@ const putUpdateReciclados = async (req, res) => {
 /* Devolución  */
 
 const getDevolucion = async (req, res) => {
-    const response = await db.any("select * from tbl_devolucion")
+    const response = await db.any("select d.id, d.cantidad,d.observacion,d.fecha, (cl.nombre ||' ' || cl.apellido) as cliente  from tbl_devolucion d inner join tbl_prestamo_tinas tp on d.fk_tbl_prestamo_tinas_id=tp.id_prestamo_tinas  inner join tbl_cliente cl  on cl.cedula = tp.fk_tbl_cliente_cedula")
     res.json(response)
 }
 
 
 
 const postCreateDevolucion = async (req, res) => {
-    const { cantidad, observacion, fecha, fk_tbl_prestamo_tinas, product_id} = req.body
-    const response = await db.any(`INSERT INTO tbl_devolucion (cantidad, observacion, fecha, fk_tbl_prestamo_tinas, product_id) 
-    values($1,$2, $3, $4,1)`, [cantidad, observacion, fecha, fk_tbl_prestamo_tinas, product_id])
+    const { cantidad, observacion, fecha, fk_tbl_prestamo_tinas_id, product_id } = req.body
+    const response = await db.any(`INSERT INTO tbl_devolucion (cantidad, observacion, fecha, fk_tbl_prestamo_tinas_id, product_id) 
+    values($1,$2, $3, $4,1)`, [cantidad, observacion, fecha, fk_tbl_prestamo_tinas_id, product_id])
     res.json({
         message: 'tbl_devolucion creada correctamente'
-        
+
     })
 }
 
 const putUpdateDevolucion = async (req, res) => {
-    const { id,cantidad, observacion, fecha, fk_tbl_prestamo_tinas, product_id } = req.body
-    const response = await db.any(`UPDATE tbl_devolucion set cantidad=$2, observacion=$3, fecha=$4,  fk_tbl_prestamo_tinas=$5
-    where id=$1 AND product_id = 1`, [id, cantidad, observacion, fecha, fk_tbl_prestamo_tinas, product_id])
+    const { id, cantidad, observacion, fecha, fk_tbl_prestamo_tinas_id, product_id } = req.body
+    const response = await db.any(`UPDATE tbl_devolucion set cantidad=$2, observacion=$3, fecha=$4,  fk_tbl_prestamo_tinas_id=$5
+    where id=$1 AND product_id = 1`, [id, cantidad, observacion, fecha, fk_tbl_prestamo_tinas_id, product_id])
     res.json({
         message: 'Decoluciones actualizado correctamente'
-        
+
     })
 }
 
@@ -273,18 +282,18 @@ const getCompras = async (req, res) => {
 }
 
 const postCreateCompras = async (req, res) => {
-    const { fecha, numero_acta,cantidad, observacion,fk_tbl_autoridades_id, product_id} = req.body
+    const { fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id } = req.body
     const response = await db.any(`INSERT INTO tbl_compras (fecha, numero_acta,cantidad, observacion,fk_tbl_autoridades_id, product_id) 
-    values($1,$2,$3,$4,$5,1)`, [fecha, numero_acta,cantidad, observacion,fk_tbl_autoridades_id, product_id])
+    values($1,$2,$3,$4,$5,1)`, [fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id])
     res.json({
         message: 'Compra creada correctamente'
     })
 }
 
 const putUpdateCompras = async (req, res) => {
-    const { id_compras,fecha, numero_acta,cantidad, observacion,fk_tbl_autoridades_id, product_id} = req.body
+    const { id_compras, fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id } = req.body
     const response = await db.any(`UPDATE tbl_compras set fecha=$2, numero_acta=$3, cantidad=$4,  observacion=$5, fk_tbl_autoridades_id=$6
-    where id_compras=$1 AND product_id = 1`, [id_compras,fecha, numero_acta,cantidad, observacion,fk_tbl_autoridades_id, product_id])
+    where id_compras=$1 AND product_id = 1`, [id_compras, fecha, numero_acta, cantidad, observacion, fk_tbl_autoridades_id, product_id])
     res.json({
         message: 'Compra actualizada correctamente'
     })
@@ -298,6 +307,7 @@ module.exports = {
     getUsuarios,
     getDespachos,
     getPrestamos,
+    getPrestamos2,
     getInsumos,
     getAutoridades,
     getTinas,
