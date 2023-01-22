@@ -3,9 +3,10 @@ db.any('select * from tbl_cliente').then(res=>{console.table(res)}) */
 
 const cors = require('cors')
 const express = require('express')
+require('dotenv').config();
 const app= express()
 //para reconocer html
-const bodeParser = require('body-parser')
+const { dbConnection } = require('./database/config')
 
 //midlewears
 app.use(express.json())
@@ -13,8 +14,18 @@ app.use(express.urlencoded({extended:true}))
 
 app.use(cors({ origin: true, credentials: true  }));
 
+
+//Conection
+
+dbConnection();
+
+
 //routes
-app.use(require('./routes/index'))
+app.use(require('./routes/index'));
+
+app.use('/api/usuarios', require('./routes/usuario'));
+app.use('/api/login/', require('./routes/auth'));
+
 
 //app.get('/',(req,res)=>res.send('Bienvenidos al servicio Rest-Api-Insumos')) 
 
