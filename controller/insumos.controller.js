@@ -16,6 +16,10 @@ const getClientes = async (req, res) => {
     const response = await db.any('select * from tbl_cliente')
     res.json(response)
 }
+const getClientesCount = async (req, res) => {
+    const response = await db.any('SELECT count(cedula) as num_clients FROM tbl_cliente')
+    res.json(response)
+}
 
 const postCreateClientes = async (req, res) => {
     const { cedula, nombre, apellido, ciudad, telefono } = req.body
@@ -69,6 +73,12 @@ const putUpdateGuardias = async (req, res) => {
 const getPedidos = async (req, res) => {
 
     const response = await db.any("SELECT pe.id_pedido, pe.fecha_pedido, pe.fecha_entrega, pe.cantidad_libras, pe.ruta, pe.observasiones,(cl.nombre || ' ' || cl.apellido) as client  FROM tbl_pedido pe INNER join tbl_cliente cl on cl.cedula=pe.fk_tbl_cliente_cedula")
+    res.json(response)
+}
+
+const getPedidosCount = async (req, res) => {
+
+    const response = await db.any("	SELECT count(id_pedido) as num_pedido FROM tbl_pedido;")
     res.json(response)
 }
 
@@ -127,6 +137,12 @@ const getPrestamos = async (req, res) => {
 
 const getPrestamos2 = async (req, res) => {
     const response = await db.any("SELECT (cl.nombre || ' '|| cl.apellido) as cliente, pt.numero_tinas, pt.fecha_prestamo,pt.fecha_entrega FROM public.tbl_prestamo_tinas pt inner join tbl_cliente cl on cl.cedula = pt.fk_tbl_cliente_cedula where numero_tinas >0;")
+    res.json(response)
+
+
+}
+const getCountPrestamos = async (req, res) => {
+    const response = await db.any("SELECT sum(numero_tinas) as num_prestamo FROM tbl_prestamo_tinas")
     res.json(response)
 
 
@@ -333,5 +349,8 @@ module.exports = {
     putUpdateAutoridades,
     putUpdateReciclados,
     putUpdateDevolucion,
-    putUpdateCompras
+    putUpdateCompras,
+    getClientesCount,
+    getPedidosCount,
+    getCountPrestamos
 }

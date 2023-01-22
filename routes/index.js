@@ -1,39 +1,41 @@
 const { Router } = require("express");
-const { getClientes, getGuardias, getPedidos, getUsuarios, getDespachos, getPrestamos, getInsumos, postCreateClientes, postCreateGuardias, 
+const { getClientes, getGuardias, getPedidos, getUsuarios, getDespachos, getPrestamos, getInsumos, postCreateClientes, postCreateGuardias,
     postCreatePedidos, postCreateInsumos, postCreatePrestamos, postCreateDespachos, putUpdateClientes, putUpdateGuardias, putUpdatePedidos, putUpdateDespachos,
     putUpdatePrestamos, putUpdateInsumos, getAutoridades, putUpdateAutoridades, postCreateAutoridades, getTinas, getDevolucion, getCompras, getReciclados,
-    postCreateReciclados, putUpdateReciclados, getPrestamos2, postCreateDevolucion, putUpdateDevolucion,postCreateCompras, putUpdateCompras} = require("../controller/insumos.controller");
+    postCreateReciclados, putUpdateReciclados, getPrestamos2, postCreateDevolucion, putUpdateDevolucion, postCreateCompras, putUpdateCompras, getClientesCount, getPedidosCount, getCountPrestamos } = require("../controller/insumos.controller");
 
 
 
-const router= Router()
+const router = Router()
 
 // Usuario
-router.get("/usuarios",getUsuarios)
+router.get("/usuarios", getUsuarios)
 
 
 // Clientes
-router.get("/clientes",getClientes)
+router.get("/clientes", getClientes)
+router.get("/clientesCount", getClientesCount)
 router.post("/clientes", postCreateClientes)
 router.put("/clientes", putUpdateClientes)
 
 //Autoridades
 
-router.get("/autoridades",getAutoridades)
+router.get("/autoridades", getAutoridades)
 router.post("/autoridades", postCreateAutoridades)
 router.put("/autoridades", putUpdateAutoridades)
 
 
 //Guardias
-router.get("/guardias",getGuardias)
+router.get("/guardias", getGuardias)
 router.post("/guardias", postCreateGuardias)
-router.put("/guardias",putUpdateGuardias)
+router.put("/guardias", putUpdateGuardias)
 
 
 //Pedidos
 router.get("/pedidos", getPedidos)
+router.get("/pedidosCount", getPedidosCount)
 router.post("/pedidos", postCreatePedidos)
-router.put("/pedidos",putUpdatePedidos)
+router.put("/pedidos", putUpdatePedidos)
 
 
 //Despachos 
@@ -43,10 +45,11 @@ router.put("/despachos", putUpdateDespachos)
 
 
 // Prestamo tinas
-router.get("/prestamos",getPrestamos)
-router.get("/prestamoss",getPrestamos2)
-    
-router.post("/prestamos",postCreatePrestamos)
+router.get("/prestamos", getPrestamos)
+router.get("/prestamosCount", getCountPrestamos)
+router.get("/prestamoss", getPrestamos2)
+
+router.post("/prestamos", postCreatePrestamos)
 router.put("/prestamos", putUpdatePrestamos)
 
 // Ingreso Insumos 
@@ -63,11 +66,11 @@ router.get("/tinas", getTinas)
 
 router.get("/compras", getCompras)
 router.post("/compras", postCreateCompras)
-router.put("/compras",putUpdateCompras)
+router.put("/compras", putUpdateCompras)
 
 //Reciclados
 
-router.get("/recicladas",getReciclados)
+router.get("/recicladas", getReciclados)
 router.post("/recicladas", postCreateReciclados)
 router.put("/recicladas", putUpdateReciclados)
 
@@ -77,4 +80,4 @@ router.get("/devoluciones", getDevolucion)
 router.post("/devoluciones", postCreateDevolucion)
 router.put("/devoluciones", putUpdateDevolucion)
 
-module.exports=router
+module.exports = router
