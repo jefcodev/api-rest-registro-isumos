@@ -6,6 +6,7 @@ const { getClientes, getGuardias, getPedidos, getUsuarios, getDespachos, getPres
 
 
 
+
 const router = Router()
 
 
@@ -17,6 +18,7 @@ router.post("/clientes", postCreateClientes)
 router.put("/clientes", putUpdateClientes)
 
 //Autoridades
+
 
 router.get("/autoridades", getAutoridades)
 router.post("/autoridades", postCreateAutoridades)
@@ -78,4 +80,6 @@ router.get("/devoluciones", getDevolucion)
 router.post("/devoluciones", postCreateDevolucion)
 router.put("/devoluciones", putUpdateDevolucion)
 
+
 module.exports = router
+
