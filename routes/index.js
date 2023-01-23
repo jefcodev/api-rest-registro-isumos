@@ -8,8 +8,6 @@ const { getClientes, getGuardias, getPedidos, getUsuarios, getDespachos, getPres
 
 const router = Router()
 
-// Usuario
-router.get("/usuarios", getUsuarios)
 
 
 // Clientes

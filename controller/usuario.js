@@ -6,10 +6,11 @@ const Usuario = require("../models/usuario");
 const { generarJWT } = require("../helpers/jwt");
 
 const getUsuarios = async (req, res) => {
-  const usuarios = await Usuario.find({}, "nombre email google password");
+  const usuarios = await Usuario.find({}, "nombre email password");
 
   res.json({
     usuarios,
+    
   });
 };
 
@@ -68,7 +69,7 @@ const actualizarUsuario = async (req, res = response) => {
     /*Actualización*/
 
     //Extraer datos del objetp
-    const { password, google, email, ...campos } = req.body;
+    const { password, email, ...campos } = req.body;
 
     if (usuarioDB.email !== email) {
       const existEmail = await Usuario.findOne({ email });
