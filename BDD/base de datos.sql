@@ -1,5 +1,31 @@
 /* Lógico_1: */
 
+drop table tbl_compras;
+drop table tbl_despacho;
+drop table tbl_devolucion;
+drop table tbl_ingreso_insumos;
+drop table tbl_pedido;
+drop table tbl_prestamo_tinas;
+drop table tbl_recicladas;
+drop table tbl_tinas;
+drop table tbl_autoridades;
+drop table tbl_cliente;
+drop table tbl_guardia;
+drop table tbl_usuario;
+
+
+drop sequence pedido_id_pedido_seq;
+drop sequence despacho_id_despacho_seq;
+drop sequence prestamos_id_prestamo_tinas_seq;
+drop sequence insumos_id_insumos_seq;
+drop sequence id_autoridades_seq;
+drop sequence id_recicladas_seq;
+drop sequence id_devolucion_seq;
+drop sequence id_tinas_seq;
+drop sequence id_compras_seq;
+
+
+
 CREATE TABLE tbl_cliente (
     cedula VARCHAR(50) PRIMARY KEY,
     nombre VARCHAR(50),
