@@ -123,6 +123,26 @@ CREATE TABLE tbl_ingreso_insumos (
 
 
 
+create sequence id_bitacora_seq
+  start with 1
+  increment by 1
+  maxvalue 99999
+  minvalue 1;
+
+CREATE TABLE tbl_bitacora (
+	id_bitacora INTEGER PRIMARY KEY NOT NULL DEFAULT nextval('id_bitacora_seq'::regclass),
+    fecha_actual DATE,
+    movimiento VARCHAR,
+	accion VARCHAR,
+    cantidad INTEGER,
+    ayudante VARCHAR,
+    cliente VARCHAR,
+    observacion VARCHAR,
+    numero_acta VARCHAR,
+    usuario VARCHAR
+);
+
+
  
 ALTER TABLE tbl_pedido ADD CONSTRAINT FK_tbl_pedido_2
     FOREIGN KEY (fk_tbl_cliente_cedula)

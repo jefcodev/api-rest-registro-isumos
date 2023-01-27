@@ -4,12 +4,12 @@ const config={
     port:'5432',
     database:'prueba_insumos',
     user:'postgres',
-    password:'12345'
+    password:'root'
     }
     
 const pgp = pgPromise({})
 const db = pgp(config)
-exports.db=db */
+exports.db=db  */
 
 
 /* Conección SERRVIDOR HEROKU */
@@ -28,4 +28,4 @@ const config={
     
 const pgp = pgPromise({})
 const db = pgp(config)
-exports.db=db 
+exports.db=db  

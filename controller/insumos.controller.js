@@ -333,6 +333,24 @@ const putUpdateCompras = async (req, res) => {
     })
 }
 
+// Bitacora
+const getBitacora = async (req, res) => {
+    const response = await db.any("select * from tbl_bitacora")
+    res.json(response)
+}
+
+const postCreateBitacora = async (req, res) => {
+
+    const { fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario} = req.body
+    const response = await db.any(`INSERT INTO tbl_bitacora (fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario) 
+    values($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario])
+
+    res.json({
+        message: 'Compra creada correctamente'
+    })
+}
+
+
 
 module.exports = {
     getClientes,
@@ -348,6 +366,7 @@ module.exports = {
     getCompras,
     getReciclados,
     getDevolucion,
+    getBitacora,
     postCreateClientes,
     postCreateGuardias,
     postCreatePedidos,
@@ -358,6 +377,7 @@ module.exports = {
     postCreateReciclados,
     postCreateDevolucion,
     postCreateCompras,
+    postCreateBitacora,
     putUpdateClientes,
     putUpdateGuardias,
     putUpdatePedidos,
