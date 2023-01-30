@@ -341,13 +341,91 @@ const getBitacora = async (req, res) => {
 
 const postCreateBitacora = async (req, res) => {
 
-    const { fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario} = req.body
-    const response = await db.any(`INSERT INTO tbl_bitacora (fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario) 
-    values($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario])
+    const { fecha_actual, movimiento, accion, cantidad, ayudante, cliente, observacion, numero_acta, usuario } = req.body
+    if (movimiento == "Recicladas") {
+        const response = await db.any("select (nombre || ' ' || apellido) as ayudante from tbl_autoridades where id=$1", [ayudante])
+        if (response == '') {
+            res.status(200).send('error')
+        } else {
+            const resultCompra = await db.any(`INSERT INTO tbl_bitacora (fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario) 
+            values($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [fecha_actual, movimiento, accion, cantidad, response[0].ayudante, cliente, observacion, numero_acta, usuario])
+            res.status(200).send('OK')
+        }
 
-    res.json({
-        message: 'Compra creada correctamente'
-    })
+    }
+    else if (movimiento == 'Compra') {
+        const response = await db.any("select (nombre || ' ' || apellido) as ayudante from tbl_autoridades where id=$1", [ayudante])
+        if (response == '') {
+            res.status(200).send('error')
+        } else {
+            const resultCompra = await db.any(`INSERT INTO tbl_bitacora (fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario) 
+            values($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [fecha_actual, movimiento, accion, cantidad, response[0].ayudante, cliente, observacion, numero_acta, usuario])
+            res.status(200).send('OK')
+        }
+
+
+    } else if (movimiento == 'Devolución') {
+        const response = await db.any("select * from tbl_prestamo_tinas where id_prestamo_tinas=$1", [cliente])
+        console.log(response)
+        if (response == '') {
+            res.status(200).send('error')
+        } else {
+            const responseC = await db.any("select (nombre || ' ' || apellido) as cliente from tbl_cliente  where cedula=$1", [response[0].fk_tbl_cliente_cedula])
+            if (responseC == '') {
+                res.status(200).send('error')
+            } else {
+                console.log(responseC)
+                const resultDev = await db.any(`INSERT INTO tbl_bitacora (fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario) 
+                values($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [fecha_actual, movimiento, accion, cantidad, ayudante, responseC[0].cliente, observacion, response[0].numero_acta, usuario])
+                res.status(200).send('OK')
+            }
+
+        }
+
+    } else if (movimiento == 'Pedido') {
+        const responseC = await db.any("select (nombre || ' ' || apellido) as cliente from tbl_cliente  where cedula=$1", [cliente])
+        if (responseC == '') {
+            res.status(200).send('error')
+        } else {
+            const resultCompra = await db.any(`INSERT INTO tbl_bitacora (fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario) 
+            values($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [fecha_actual, movimiento, accion, cantidad, ayudante, responseC[0].cliente, observacion, numero_acta, usuario])
+            res.status(200).send('OK')
+        }
+
+    } else if (movimiento == 'Despacho') {
+        const responseC = await db.any("select (nombre || ' ' || apellido) as cliente from tbl_cliente  where cedula=$1", [cliente])
+        const responseA = await db.any("select (nombre || ' ' || apellido) as ayudante from tbl_guardia  where cedula=$1", [ayudante])
+
+        if (responseC == '' || responseA == '') {
+            res.status(200).send('error')
+        } else {
+            const resultCompra = await db.any(`INSERT INTO tbl_bitacora (fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario) 
+            values($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [fecha_actual, movimiento, accion, cantidad, responseA[0].ayudante, responseC[0].cliente, observacion, numero_acta, usuario])
+            res.status(200).send('OK')
+        }
+
+    } else if (movimiento == 'Insumos') {
+        const responseA = await db.any("select (nombre || ' ' || apellido) as ayudante from tbl_guardia  where cedula=$1", [ayudante])
+        if (responseA == '') {
+            res.status(200).send('error')
+        } else {
+            const resultCompra = await db.any(`INSERT INTO tbl_bitacora (fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario) 
+            values($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [fecha_actual, movimiento, accion, cantidad, responseA[0].ayudante, cliente, observacion, numero_acta, usuario])
+            res.status(200).send('OK')
+        }
+
+
+    } else if (movimiento == 'Prestamo') {
+        const responseC = await db.any("select (nombre || ' ' || apellido) as cliente from tbl_cliente  where cedula=$1", [cliente])
+        if (responseC == '') {
+            res.status(200).send('error')
+        } else {
+            const resultCompra = await db.any(`INSERT INTO tbl_bitacora (fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario) 
+            values($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [fecha_actual, movimiento, accion, cantidad, ayudante, responseC[0].cliente, observacion, numero_acta, usuario])
+            res.status(200).send('OK')
+        }
+
+    }
 }
 
 
