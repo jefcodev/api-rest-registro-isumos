@@ -1,8 +1,10 @@
 const { Router } = require("express");
+const checkAuth = require("../middleware/auth")
+const checkRoleAuth = require("../middleware/rol")
 const { getClientes, getGuardias, getPedidos, getUsuarios, getDespachos, getPrestamos, getInsumos, postCreateClientes, postCreateGuardias,
     postCreatePedidos, postCreateInsumos, postCreatePrestamos, postCreateDespachos, putUpdateClientes, putUpdateGuardias, putUpdatePedidos, putUpdateDespachos,
     putUpdatePrestamos, putUpdateInsumos, getAutoridades, putUpdateAutoridades, postCreateAutoridades, getTinas, getDevolucion, getCompras, getReciclados,
-    postCreateReciclados, putUpdateReciclados, getPrestamos2, postCreateDevolucion, putUpdateDevolucion, postCreateCompras, putUpdateCompras, getClientesCount, getPedidosCount, getCountPrestamos, getBitacora, postCreateBitacora } = require("../controller/insumos.controller");
+    postCreateReciclados, getBitacorabyClientandAyudante, putUpdateReciclados, getPrestamos2, postCreateDevolucion, putUpdateDevolucion, postCreateCompras, putUpdateCompras, getClientesCount, getPedidosCount, getCountPrestamos, getBitacora, postCreateBitacora } = require("../controller/insumos.controller");
 
 
 
@@ -12,78 +14,80 @@ const router = Router()
 router.get("/usuarios", getUsuarios)
 
 // Clientes
-router.get("/clientes", getClientes)
-router.get("/clientesCount", getClientesCount)
-router.post("/clientes", postCreateClientes)
-router.put("/clientes", putUpdateClientes)
+router.get("/clientes", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getClientes)
+router.get("/clientesCount", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getClientesCount)
+router.post("/clientes", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), postCreateClientes)
+router.put("/clientes", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), putUpdateClientes)
+
 
 //Autoridades
 
 
-router.get("/autoridades", getAutoridades)
-router.post("/autoridades", postCreateAutoridades)
-router.put("/autoridades", putUpdateAutoridades)
+router.get("/autoridades", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getAutoridades)
+router.post("/autoridades", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), postCreateAutoridades)
+router.put("/autoridades", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), putUpdateAutoridades)
 
 
 //Guardias
-router.get("/guardias", getGuardias)
-router.post("/guardias", postCreateGuardias)
-router.put("/guardias", putUpdateGuardias)
+router.get("/guardias", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getGuardias)
+router.post("/guardias", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), postCreateGuardias)
+router.put("/guardias", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), putUpdateGuardias)
 
 
 //Pedidos
-router.get("/pedidos", getPedidos)
-router.get("/pedidosCount", getPedidosCount)
-router.post("/pedidos", postCreatePedidos)
-router.put("/pedidos", putUpdatePedidos)
+router.get("/pedidos", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getPedidos)
+router.get("/pedidosCount", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getPedidosCount)
+router.post("/pedidos", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), postCreatePedidos)
+router.put("/pedidos", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), putUpdatePedidos)
 
 
 //Despachos 
-router.get("/despachos", getDespachos)
-router.post("/despachos", postCreateDespachos)
-router.put("/despachos", putUpdateDespachos)
+router.get("/despachos", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getDespachos)
+router.post("/despachos", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), postCreateDespachos)
+router.put("/despachos", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), putUpdateDespachos)
 
 
 // Prestamo tinas
-router.get("/prestamos", getPrestamos)
-router.get("/prestamosCount", getCountPrestamos)
-router.get("/prestamoss", getPrestamos2)
+router.get("/prestamos", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getPrestamos)
+router.get("/prestamosCount", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getCountPrestamos)
+router.get("/prestamoss", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getPrestamos2)
 
-router.post("/prestamos", postCreatePrestamos)
-router.put("/prestamos", putUpdatePrestamos)
+router.post("/prestamos", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), postCreatePrestamos)
+router.put("/prestamos", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), putUpdatePrestamos)
 
 // Ingreso Insumos 
-router.get("/insumos", getInsumos)
-router.post("/insumos", postCreateInsumos)
-router.put("/insumos", putUpdateInsumos)
+router.get("/insumos", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getInsumos)
+router.post("/insumos", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), postCreateInsumos)
+router.put("/insumos", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), putUpdateInsumos)
 
 
 //Tinas
 
-router.get("/tinas", getTinas)
+router.get("/tinas", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getTinas)
 
 // Compras
 
-router.get("/compras", getCompras)
-router.post("/compras", postCreateCompras)
-router.put("/compras", putUpdateCompras)
+router.get("/compras", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getCompras)
+router.post("/compras", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), postCreateCompras)
+router.put("/compras", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), putUpdateCompras)
 
 //Reciclados
 
-router.get("/recicladas", getReciclados)
-router.post("/recicladas", postCreateReciclados)
-router.put("/recicladas", putUpdateReciclados)
+router.get("/recicladas", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getReciclados)
+router.post("/recicladas", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), postCreateReciclados)
+router.put("/recicladas", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), putUpdateReciclados)
 
 // Devoluciones
 
-router.get("/devoluciones", getDevolucion)
-router.post("/devoluciones", postCreateDevolucion)
-router.put("/devoluciones", putUpdateDevolucion)
+router.get("/devoluciones", checkAuth, checkRoleAuth(['Administrador']), getDevolucion)
+router.post("/devoluciones", checkAuth, checkRoleAuth(['Administrador']), postCreateDevolucion)
+router.put("/devoluciones", checkAuth, checkRoleAuth(['Administrador']), putUpdateDevolucion)
 
 //Bitacoras
 
-router.get("/bitacora", getBitacora)
-router.post("/bitacora", postCreateBitacora)
+router.get("/bitacora", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getBitacora)
+router.post("/bitacora", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), postCreateBitacora)
+router.get("/bit", checkAuth, checkRoleAuth(['Administrador', 'Gerente']), getBitacorabyClientandAyudante)
 
 
 module.exports = router

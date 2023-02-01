@@ -22,9 +22,10 @@ dbConnection();
 
 //routes
 app.use(require('./routes/index'));
+app.use(require('./routes/auth'));
 
-app.use('/api/usuarios', require('./routes/usuario'));
-app.use('/api/login/', require('./routes/auth'));
+
+
 
 
 //app.get('/',(req,res)=>res.send('Bienvenidos al servicio Rest-Api-Insumos')) 

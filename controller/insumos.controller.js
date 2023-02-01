@@ -1,6 +1,7 @@
 const { response } = require("express")
 const { db } = require("../cnn")
 
+//
 
 // Usuario
 
@@ -339,11 +340,22 @@ const getBitacora = async (req, res) => {
     res.json(response)
 }
 
+const getBitacorabyClientandAyudante = async (req, res) => {
+    const { busqueda } = req.body;
+    sql = `select * from tbl_bitacora where cliente || ayudante like '%` + busqueda + `%'`;
+    console.log(sql)
+    const response = await db.any(sql)
+    console.log(response)
+    res.json(response)
+}
+
 const postCreateBitacora = async (req, res) => {
 
     const { fecha_actual, movimiento, accion, cantidad, ayudante, cliente, observacion, numero_acta, usuario } = req.body
     if (movimiento == "Recicladas") {
+
         const response = await db.any("select (nombre || ' ' || apellido) as ayudante from tbl_autoridades where id=$1", [ayudante])
+
         if (response == '') {
             res.status(200).send('error')
         } else {
@@ -351,6 +363,7 @@ const postCreateBitacora = async (req, res) => {
             values($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [fecha_actual, movimiento, accion, cantidad, response[0].ayudante, cliente, observacion, numero_acta, usuario])
             res.status(200).send('OK')
         }
+
 
     }
     else if (movimiento == 'Compra') {
@@ -374,7 +387,7 @@ const postCreateBitacora = async (req, res) => {
             if (responseC == '') {
                 res.status(200).send('error')
             } else {
-                console.log(responseC)
+                // console.log(responseC)
                 const resultDev = await db.any(`INSERT INTO tbl_bitacora (fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario) 
                 values($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [fecha_actual, movimiento, accion, cantidad, ayudante, responseC[0].cliente, observacion, response[0].numero_acta, usuario])
                 res.status(200).send('OK')
@@ -423,9 +436,9 @@ const postCreateBitacora = async (req, res) => {
             const resultCompra = await db.any(`INSERT INTO tbl_bitacora (fecha_actual, movimiento, accion,cantidad, ayudante, cliente, observacion, numero_acta, usuario) 
             values($1,$2,$3,$4,$5,$6,$7,$8,$9)`, [fecha_actual, movimiento, accion, cantidad, ayudante, responseC[0].cliente, observacion, numero_acta, usuario])
             res.status(200).send('OK')
-        }
+        }
 
-    }
+    }
 }
 
 
@@ -468,6 +481,7 @@ module.exports = {
     putUpdateCompras,
     getClientesCount,
     getPedidosCount,
-    getCountPrestamos
+    getCountPrestamos,
+    getBitacorabyClientandAyudante
 
 }

@@ -1,53 +1,76 @@
-const { response } = require('express');
+const { response } = require("express")
+const { db } = require("../cnn")
+const { compare } = require("../Helpers/handleBcrypt")
+const { tokenSign } = require("../Helpers/generateToken")
 
-const Usuarios = require ('../models/usuario')
-
-const bcrypt = require('bcryptjs');
-
-const { generarJWT } = require('../helpers/jwt');
-
-const login = async (req, res = response) => {
-    // extraer el email y password 
-    const { email, password } = req.body;
-
+const loginCtrl = async (req, res) => {
     try {
-         // verificar email 
-        const usuarioDB = await Usuarios.findOne({email});
-       
-        if(!usuarioDB){
-            return res.status(400).json({
-                ok:false,
-                msg: 'Email incorrecto'
-            });
-        };
-        // verificar contraseña
-        const validarPassword = bcrypt.compareSync(password, usuarioDB.password);
+        const { nombre_usuario, clave_usuario } = req.body
 
-        if(!validarPassword){
-            res.status(400).json({
-                ok:false,
-                msg:'contraseña incorrecta'
-            });
-        };
+console.log('100'+nombre_usuario)
 
-        // Generar JWT
+     const response = await  db.any('select id_usuario, tipo_usuario, nombre_usuario, clave_usuario from tbl_usuario where nombre_usuario=$1', [nombre_usuario]);
+     console.log(response)
+            if (response == '') {
+                console.log('3')
+                res.status(200).send(`{"status":"Error", "resp":"Usuario no registrado"}`)
+            } else {
+                console.log('4')
+                checkPassword = await compare(clave_usuario, response[0].clave_usuario);
+                console.log('5')
+                if (checkPassword) {
+                    console.log('6')
+                    const token = await tokenSign(response[0].id_usuario, response[0].tipo_usuario);
+                    console.log('7')
+                    // response.status.send(data)
+                    res.status(200).send(`{"status":"OK", "token":"${token}"}`)
+                    console.log('8')
 
-        const token = await generarJWT(usuarioDB.id);
+                } else {
+                    res.status(200).send(`{"status":"Error", "resp":"Contaseña incorrecta"} `)
+                }
 
-        res.json({
-            ok: true,
-            token
-        })
+            }
+
 
     } catch (error) {
-        console.log(error)
-        res.status(500).json({
-            ok: false,
-            msg: 'error inesperado'
-        })
+        res.status(404).send(`{"status":"Error", "resp":"Error"}`)
     }
 }
 
+
+// const loginCtrl = async (req, res) => {
+//     try {
+//         const { nombre_usuario, clave_usuario } = req.body
+//         console.log('asdasd')
+
+//         db.query('select id_usuario, tipo_usuario, nombre_usuario, clave_usuario from tbl_usuario where nombre_usuario=$1', [nombre_usuario], async (error, results) => {
+
+//             if (results.rows == '') {
+//                 res.status(200).send(`{"status":"Error", "resp":"Usuario no registrado"}`)
+//             } else {
+//                 if (error) {
+//                     res.status(404).send(`{"status":"Error", "resp":"Error"}`)
+//                 } else {
+//                     checkPassword = await compare(clave_usuario, results.rows[0].clave_usuario);
+//                     if (checkPassword) {
+
+//                         const token = await tokenSign(results.rows[0].id_usuario, results.rows[0].tipo_usuario);
+//                         // response.status.send(data)
+//                         res.status(200).send(`{"status":"OK", "token":"${token}"}`)
+
+//                     } else {
+//                         res.status(200).send(`{"status":"Error", "resp":"Contaseña incorrecta"}`)
+//                     }
+//                 }
+//             }
+
+//         })
+//     } catch (error) {
+//         res.status(404).send(`{"status":"Error", "resp":"Error"}`)
+//     }
+// }
 module.exports = {
-    login
-};
+    loginCtrl
+
+}

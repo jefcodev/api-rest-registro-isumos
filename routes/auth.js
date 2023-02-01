@@ -1,19 +1,16 @@
-const {Router} = require('express');
-const { body } = require('express-validator');
-const { login } = require('../controller/auth');
-const { validarCampos } = require('../middlewares/validar-campos');
-
-const router =  Router();
-/* Path: '/api/login' */
-
-router.post('/',
-[
-    body('email','el email es obligatorio').isEmail(),
-    body('password', 'el password es obligatorio').not().isEmpty(),
-    validarCampos
-], login
-);
+const { Router } = require("express");
+const { createUsuario, postCreateClientes } = require("../controller/usuario");
+const { loginCtrl } = require("../controller/auth");
 
 
 
-module.exports = router;
+
+const router = Router()
+
+
+router.post("/usuario", createUsuario)
+router.post("/login", loginCtrl)
+
+
+module.exports = router
+
