@@ -8,7 +8,7 @@ const tokenSign = async (id, rol) => {
         },
         "SistemaHUacales",
         {
-            expiresIn: "30d",
+            expiresIn: "12h",
         }
     );
 };
