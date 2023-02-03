@@ -14,80 +14,80 @@ const router = Router()
 router.get("/usuarios", getUsuarios)
 
 // Clientes
-router.get("/clientes", checkAuth, getClientes)
-router.get("/clientesCount", checkAuth, getClientesCount)
-router.post("/clientes", checkAuth, postCreateClientes)
-router.put("/clientes", checkAuth, putUpdateClientes)
+router.get("/clientes",  getClientes)
+router.get("/clientesCount",  getClientesCount)
+router.post("/clientes",  postCreateClientes)
+router.put("/clientes",  putUpdateClientes)
 
 
 //Autoridades
 
 
-router.get("/autoridades", checkAuth, getAutoridades)
-router.post("/autoridades", checkAuth, postCreateAutoridades)
-router.put("/autoridades", checkAuth, putUpdateAutoridades)
+router.get("/autoridades",  getAutoridades)
+router.post("/autoridades",  postCreateAutoridades)
+router.put("/autoridades",  putUpdateAutoridades)
 
 
 //Guardias
-router.get("/guardias", checkAuth, getGuardias)
-router.post("/guardias", checkAuth, postCreateGuardias)
-router.put("/guardias", checkAuth, putUpdateGuardias)
+router.get("/guardias",  getGuardias)
+router.post("/guardias",  postCreateGuardias)
+router.put("/guardias",  putUpdateGuardias)
 
 
 //Pedidos
-router.get("/pedidos", checkAuth, getPedidos)
-router.get("/pedidosCount", checkAuth, getPedidosCount)
-router.post("/pedidos", checkAuth, postCreatePedidos)
-router.put("/pedidos", checkAuth, putUpdatePedidos)
+router.get("/pedidos",  getPedidos)
+router.get("/pedidosCount",  getPedidosCount)
+router.post("/pedidos",  postCreatePedidos)
+router.put("/pedidos",  putUpdatePedidos)
 
 
 //Despachos 
-router.get("/despachos", checkAuth, getDespachos)
-router.post("/despachos", checkAuth, postCreateDespachos)
-router.put("/despachos", checkAuth, putUpdateDespachos)
+router.get("/despachos",  getDespachos)
+router.post("/despachos",  postCreateDespachos)
+router.put("/despachos",  putUpdateDespachos)
 
 
 // Prestamo tinas
-router.get("/prestamos", checkAuth, getPrestamos)
-router.get("/prestamosCount", checkAuth, getCountPrestamos)
-router.get("/prestamoss", checkAuth, getPrestamos2)
+router.get("/prestamos",  getPrestamos)
+router.get("/prestamosCount",  getCountPrestamos)
+router.get("/prestamoss",  getPrestamos2)
 
-router.post("/prestamos", checkAuth, postCreatePrestamos)
-router.put("/prestamos", checkAuth, putUpdatePrestamos)
+router.post("/prestamos",  postCreatePrestamos)
+router.put("/prestamos",  putUpdatePrestamos)
 
 // Ingreso Insumos 
-router.get("/insumos", checkAuth, getInsumos)
-router.post("/insumos", checkAuth, postCreateInsumos)
-router.put("/insumos", checkAuth, putUpdateInsumos)
+router.get("/insumos",  getInsumos)
+router.post("/insumos",  postCreateInsumos)
+router.put("/insumos",  putUpdateInsumos)
 
 
 //Tinas
 
-router.get("/tinas", checkAuth, getTinas)
+router.get("/tinas",  getTinas)
 
 // Compras
 
-router.get("/compras", checkAuth, getCompras)
-router.post("/compras", checkAuth, postCreateCompras)
-router.put("/compras", checkAuth, putUpdateCompras)
+router.get("/compras",  getCompras)
+router.post("/compras",  postCreateCompras)
+router.put("/compras",  putUpdateCompras)
 
 //Reciclados
 
-router.get("/recicladas", checkAuth, getReciclados)
-router.post("/recicladas", checkAuth, postCreateReciclados)
-router.put("/recicladas", checkAuth, putUpdateReciclados)
+router.get("/recicladas",  getReciclados)
+router.post("/recicladas",  postCreateReciclados)
+router.put("/recicladas",  putUpdateReciclados)
 
 // Devoluciones
 
-router.get("/devoluciones", checkAuth, checkRoleAuth(['Administrador']), getDevolucion)
+router.get("/devoluciones",  checkAuth, checkRoleAuth(['Administrador']), getDevolucion)
 router.post("/devoluciones", checkAuth, checkRoleAuth(['Administrador']), postCreateDevolucion)
 router.put("/devoluciones", checkAuth, checkRoleAuth(['Administrador']), putUpdateDevolucion)
 
 //Bitacoras
 
-router.get("/bitacora", checkAuth, getBitacora)
-router.post("/bitacora", checkAuth, postCreateBitacora)
-router.get("/bit", checkAuth, getBitacorabyClientandAyudante)
+router.get("/bitacora",  getBitacora)
+router.post("/bitacora",  postCreateBitacora)
+router.get("/bit",  getBitacorabyClientandAyudante)
 
 
 module.exports = router
